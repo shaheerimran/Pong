@@ -20,8 +20,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener {
 	
 
 	//Paddles
-	Paddle left = new Paddle(20, 20, 20, 140, Color.white, 0);
-	Paddle right = new Paddle(860, 20, 20, 140, Color.white, 0);
+	int paddle_V = (int) Math.sqrt((ball.getV_x() * ball.getV_x()) + (ball.getV_y() * ball.getV_y()));
+	Paddle left = new Paddle(20, 20, 20, 140, Color.white, paddle_V);
+	Paddle right = new Paddle(860, 20, 20, 140, Color.white, paddle_V);
 
 
 
@@ -165,28 +166,28 @@ public class Driver extends JPanel implements ActionListener, KeyListener {
 		//check if right paddle is in range and if up arrow is pressed
 		if(right.getY() >= 10){
 			if(arg0.getKeyCode() == 38){
-				right.setVelocity(-5);
+				right.setVelocity(-8);
 			}
 		}	
 
 		//check if right paddle is in range and if bottom arrow is pressed
 		if(right.getY() + right.getHeight() <= table_height - 30){
 			if(arg0.getKeyCode() == 40){
-				right.setVelocity(5);
+				right.setVelocity(8);
 			}
 		}
 
 		//check if left paddle is in range and if 'w' is pressed
 		if(left.getY() >= 10){
 			if(arg0.getKeyCode() == 87){	
-				left.setVelocity(-5);
+				left.setVelocity(-8);
 			}
 		}
 
 		//check if left paddle is in range and if 's' is pressed
 		if(left.getY() + left.getHeight() <= table_height - 30){
 			if(arg0.getKeyCode() == 83){
-				left.setVelocity(5);
+				left.setVelocity(8);
 			}
 		}
 	}
