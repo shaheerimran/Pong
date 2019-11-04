@@ -20,8 +20,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener {
 	
 
 	//Paddles
-	Paddle left = new Paddle(20, 20, 20, 140, Color.white);
-	Paddle right = new Paddle(860, 20, 20, 140, Color.white);
+	Paddle left = new Paddle(20, 20, 20, 140, Color.white, 0);
+	Paddle right = new Paddle(860, 20, 20, 140, Color.white, 0);
 
 
 
@@ -48,8 +48,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener {
 		left.paint(g);
 		right.paint(g);
 
-		
-
 		//score counter
 		g.setColor(Color.YELLOW);
 		g.setFont(new Font("Courier", 0, 50));
@@ -62,17 +60,40 @@ public class Driver extends JPanel implements ActionListener, KeyListener {
 		//Ball moving
 		ball.setX(ball.getX() + ball.getV_x());
 		ball.setY(ball.getY() + ball.getV_y());
-	
-		//bottom wall collision
+		
+		//Paddles moving
+	    left.move();
+	    right.move();
+		
+		//bottom wall collision for ball
 		if(ball.getY() > 530){
 			ball.setV_y(-ball.getV_y());
 		}
-
-		//top wall collision
+		
+		//bottom wall collision for paddles
+		if(right.getY() + right.getHeight() >= table_height - right.getHeight()){
+			right.setVelocity(0);
+		}
+		
+		if(left.getY() + left.getHeight() >= table_height - left.getHeight()){
+			left.setVelocity(0);
+		}
+		
+		//top wall collision for ball
 		if(ball.getY() < 0){
 			ball.setV_y(-ball.getV_y());
 		}
 
+		//top wall collision for paddles
+		
+		if(right.getY() <= 10){
+			right.setVelocity(0);
+		}
+		
+		if(left.getY() <= 10){
+			left.setVelocity(0);
+		}
+		
 		//right wall collision + add score to left player + reset ball
 		if(ball.getX() > 850){
 			ball.setX(table_width / 2);
@@ -91,17 +112,15 @@ public class Driver extends JPanel implements ActionListener, KeyListener {
 			ball.setV_y(-ball.getV_y());
 			right.setScore(right.getScore() + 1);
 		}
-
-		if(ball.getX() + ball.getWidth() - left.getX() <= ball.getWidth() + left.getWidth()){
-			if(ball.getY() >= left.getY() && ball.getY() <= left.getY() + left.getHeight()){
-				ball.setV_x(-ball.getV_x());
-			}
+		
+		//left paddle collision
+		if(ball.collided(left)){
+			ball.setV_x(-ball.getV_x());
 		}
 		
-		if(right.getX() + right.getWidth() - ball.getX() <= ball.getWidth() + right.getWidth()){
-			if(ball.getY() >= right.getY() && ball.getY() <= right.getY() + right.getHeight()){
-				ball.setV_x(-ball.getV_x());
-			}
+		//right paddle collision
+		if(ball.collided(right)){
+			ball.setV_x(-ball.getV_x());
 		}
 
 	}//end of update function
@@ -146,28 +165,28 @@ public class Driver extends JPanel implements ActionListener, KeyListener {
 		//check if right paddle is in range and if up arrow is pressed
 		if(right.getY() >= 10){
 			if(arg0.getKeyCode() == 38){
-				right.setY(right.getY() - 20);
+				right.setVelocity(-5);
 			}
 		}	
 
 		//check if right paddle is in range and if bottom arrow is pressed
-		if(right.getY() + right.getHeight() <= table_height - 20){
+		if(right.getY() + right.getHeight() <= table_height - 30){
 			if(arg0.getKeyCode() == 40){
-				right.setY(right.getY() + 20);
+				right.setVelocity(5);
 			}
 		}
 
 		//check if left paddle is in range and if 'w' is pressed
 		if(left.getY() >= 10){
 			if(arg0.getKeyCode() == 87){	
-				left.setY(left.getY() - 20);
+				left.setVelocity(-5);
 			}
 		}
 
 		//check if left paddle is in range and if 's' is pressed
-		if(left.getY() + left.getHeight() <= table_height - 20){
+		if(left.getY() + left.getHeight() <= table_height - 30){
 			if(arg0.getKeyCode() == 83){
-				left.setY(left.getY() + 20);
+				left.setVelocity(5);
 			}
 		}
 	}
@@ -175,7 +194,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		//released
-
+		if(e.getKeyCode() == 38 || e.getKeyCode() == 40){
+			right.setVelocity(0);
+		}
+		
+		if(e.getKeyCode() == 87 || e.getKeyCode() == 83){
+			left.setVelocity(0);
+		}
 }
 
 @Override
