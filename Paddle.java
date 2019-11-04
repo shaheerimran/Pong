@@ -102,12 +102,4 @@ public class Paddle {
 	public void setScore(int i) {
 		score = i;
 	}
-	
-	public void smoothUpMovement(){
-		this.y -= this.velocity;
-	}
-	
-	public void smoothDownMovement(){
-		this.y += this.velocity;
-	}
 }
