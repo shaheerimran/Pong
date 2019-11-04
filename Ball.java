@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 
 public class Ball {
@@ -21,23 +22,26 @@ public class Ball {
 	public Ball(){
 		x = 450;
 		y = 300;
-		setV_x(10);
-		setV_y(4);
+		v_x = 4;
+		v_y = 3;
 		width = 50;
 		color = Color.WHITE;
-	}
-	
-	//Constructor for given driver
-	public Ball(Driver d){
-		super();
-		x = d.getTW()/2;
-		y = d.getTH()/2;
 	}
 	
 	//Draw ball
 	public void paint(Graphics g){
 		g.setColor(color);
 		g.fillOval(x, y, width, width);
+	}
+	
+	// check if ball collided with paddle
+	public boolean collided(Paddle p){
+		
+		Rectangle b = new Rectangle(x, y, width, width);
+		Rectangle pad = new Rectangle(p.getX(), p.getY(), p.getWidth(), p.getHeight());
+		
+		return b.intersects(pad);
+		
 	}
 	
 	public int getX(){
@@ -87,6 +91,4 @@ public class Ball {
 	public void setColor(Color c){
 		color = c;
 	}
-	
-	
 }
