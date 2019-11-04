@@ -35,9 +35,11 @@ public class Paddle {
 		width = 20;
 		c = Color.white;
 		velocity = 0;
+		score = 0;
 	}
 	
 	public Paddle(int x_param, int y_param, int w, int h, Color hue, int v){
+		super();
 		x = x_param;
 		y = y_param;
 		height = h;
